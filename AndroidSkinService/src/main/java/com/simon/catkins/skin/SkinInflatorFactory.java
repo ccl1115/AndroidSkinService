@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 布局钩子
+ * InflatorFactory to bind hooks to views.
  *
  * @author yulu02
  */
@@ -38,21 +38,6 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         mConstructors = new HashMap<String, Constructor<? extends View>>();
         mDisplayMetrics = context.getResources().getDisplayMetrics();
         mRes = context.getResources();
-    }
-
-    /**
-     * Use to bind a typed value to an applier
-     */
-    public static class ValueInfo {
-        public final String skin;
-        public final TypedValue typedValue;
-        public final Hook.Apply apply;
-
-        public ValueInfo(String skin, TypedValue typedValue, Hook.Apply apply) {
-            this.skin = skin;
-            this.typedValue = typedValue;
-            this.apply = apply;
-        }
     }
 
 

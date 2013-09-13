@@ -5,11 +5,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.simon.catkins.skin.impl.DaySkin;
-import com.simon.catkins.skin.impl.NightSkin;
-
 import java.util.List;
 import java.util.Stack;
+
+import com.simon.catkins.skin.impl.DaySkin;
+import com.simon.catkins.skin.impl.NightSkin;
 
 /**
  * 皮肤服务，替代SkinManager
@@ -65,14 +65,14 @@ public class SkinService {
                 }
             } else {
                 @SuppressWarnings("unchecked")
-                List<SkinInflatorFactory.ValueInfo> list = (List<SkinInflatorFactory.ValueInfo>) ViewTagger.getTag(v, R.id.skin_hooker);
+                List<ValueInfo> list = (List<ValueInfo>) ViewTagger.getTag(v, R.id.skin_hooker);
 
                 if (list == null) {
                     continue;
                 }
 
                 Loot.logApply("Apply skin [" + mSkin + "] to view id: " + Integer.toHexString(v.getId()));
-                for (SkinInflatorFactory.ValueInfo info : list) {
+                for (ValueInfo info : list) {
                     if (mSkin.equals(info.skin)) {
                         info.apply.to(v, info.typedValue);
                     }

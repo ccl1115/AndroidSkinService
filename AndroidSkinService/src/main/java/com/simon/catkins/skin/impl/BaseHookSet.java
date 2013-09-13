@@ -9,7 +9,7 @@ import com.simon.catkins.skin.hooks.VisibilityHook;
 /**
  * @author Simon Yu
  */
-abstract class BaseHookSet extends HookSet {
+public abstract class BaseHookSet extends HookSet {
 
     BaseHookSet() {
         put("background", new BackgroundHook());
