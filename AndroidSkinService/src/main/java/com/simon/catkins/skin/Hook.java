@@ -12,7 +12,6 @@ public interface Hook {
 
     String hookName();
 
-    @SuppressWarnings("SameReturnValue")
     boolean shouldHook(View view, TypedValue value);
 
     Apply getApply();

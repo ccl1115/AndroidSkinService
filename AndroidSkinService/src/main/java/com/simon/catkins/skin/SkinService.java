@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Stack;
 
-import com.simon.catkins.skin.impl.DaySkin;
-import com.simon.catkins.skin.impl.NightSkin;
+import com.simon.catkins.skin.impl.*;
 
 /**
  * @author yulu02
