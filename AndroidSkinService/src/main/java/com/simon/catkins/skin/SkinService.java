@@ -12,7 +12,6 @@ import com.simon.catkins.skin.impl.DaySkin;
 import com.simon.catkins.skin.impl.NightSkin;
 
 /**
- * 皮肤服务，替代SkinManager
  * @author yulu02
  */
 public class SkinService {

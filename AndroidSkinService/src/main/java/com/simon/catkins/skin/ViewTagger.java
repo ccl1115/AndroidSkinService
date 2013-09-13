@@ -19,7 +19,7 @@ import android.view.View;
  *
  * @author RabidMutantStargoat@gmail.com
  */
-public class ViewTagger {
+class ViewTagger {
     /** Stores the basic tag referred to without an ID */
     public Object mBareTag = null;
     public SparseArray<Object> mTags = null;

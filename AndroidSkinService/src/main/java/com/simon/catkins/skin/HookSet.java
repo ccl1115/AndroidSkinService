@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 钩子套件
  * @author yulu02
  */
 public abstract class HookSet implements Map<String, Hook> {

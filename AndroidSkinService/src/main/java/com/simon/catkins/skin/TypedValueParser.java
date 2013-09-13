@@ -74,7 +74,7 @@ class TypedValueParser {
     /**
      * dimension literal
      *
-     * @param dimension 尺寸
+     * @param dimension the dimension
      * @return null if parse error occurred
      */
     static TypedValue parseDimension(String dimension, DisplayMetrics dm) {
