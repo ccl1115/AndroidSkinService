@@ -4,9 +4,9 @@ package com.simon.catkins.skin.impl;
 /**
  * @author Simon Yu
  */
-public class DaySkin extends BaseHookSet {
+public class DefaultSkin extends BaseSkin {
 
-    public static final String NAME = "day";
+    public static final String NAME = "default";
 
     @Override
     public String getPrefix() {
@@ -15,6 +15,6 @@ public class DaySkin extends BaseHookSet {
 
     @Override
     public String getNamespace() {
-        return "http://schemas.android.com/android/skin/day";
+        return "http://schemas.android.com/android/skin/default";
     }
 }

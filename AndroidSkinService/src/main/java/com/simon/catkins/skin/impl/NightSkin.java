@@ -3,7 +3,7 @@ package com.simon.catkins.skin.impl;
 /**
  * @author Simon Yu
  */
-public class NightSkin extends BaseHookSet {
+public class NightSkin extends BaseSkin {
 
     public static final String NAME = "night";
 

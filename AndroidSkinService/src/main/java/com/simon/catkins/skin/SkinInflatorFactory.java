@@ -25,8 +25,6 @@ import java.util.Map;
 public class SkinInflatorFactory implements LayoutInflater.Factory {
     private static final String TAG = "SkinInflatorFactory";
 
-    private HookSet[] mHookSets;
-
     private static final String LOAD_PREFIX = "android.widget.";
 
     private final Map<String, Constructor<? extends View>> mConstructors;
@@ -34,7 +32,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
     private final DisplayMetrics mDisplayMetrics;
     private final Resources mRes;
 
-    public SkinInflatorFactory(Context context) {
+    SkinInflatorFactory(Context context) {
         mConstructors = new HashMap<String, Constructor<? extends View>>();
         mDisplayMetrics = context.getResources().getDisplayMetrics();
         mRes = context.getResources();
@@ -91,41 +89,23 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
             }
         }
 
-        if (mHookSets == null || mHookSets.length == 0) return view;
+        // if skipped just return the view
+        if (attrs.getAttributeBooleanValue(Attrs.NAMESPACE, Attrs.ATTR_SKIP, false)) return view;
+
+        // if no skin register just return the view
+        if (SkinFactory.getFactory().all().size() == 0) return view;
 
         final List<ValueInfo> infos = new ArrayList<ValueInfo>();
 
-        for (HookSet hookSet : mHookSets) {
-            for (Hook hook : hookSet.values()) {
-                final String value = attrs.getAttributeValue(hookSet.getNamespace(), hook.hookName());
-                if (value == null) {
-                    continue;
-                }
-                TypedValue tv = null;
-                final int hookType = hook.hookType();
-                if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
-                    tv = TypedValueParser.parseReference(value, mRes);
-                }
-                if (tv == null) {
-                    if ((hookType & HookType.COLOR) == HookType.COLOR) {
-                        tv = TypedValueParser.parseColor(value);
-                    } else if ((hookType & HookType.STRING) == HookType.STRING) {
-                        tv = TypedValueParser.parseString(value);
-                    } else if ((hookType & HookType.FLOAT) == HookType.FLOAT) {
-                        tv = TypedValueParser.parseFloat(value);
-                    } else if ((hookType & HookType.INTEGER) == HookType.INTEGER) {
-                        tv = TypedValueParser.parseInt(value);
-                    } else if ((hookType & HookType.BOOLEAN) == HookType.BOOLEAN) {
-                        tv = TypedValueParser.parseInt(value);
-                    } else if ((hookType & HookType.DIMENSION) == HookType.DIMENSION) {
-                        tv = TypedValueParser.parseDimension(value, mDisplayMetrics);
-                    }
-                }
-                if (tv == null) continue;
+        // if force to a skin type, we only bind hooks of this skin and apply skin immediately to the view.
+        final String forceSkin = attrs.getAttributeValue(Attrs.NAMESPACE, Attrs.ATTR_FORCE_SKIN);
+        final boolean isForceSkin = forceSkin != null;
 
-                if (hook.shouldHook(view, tv)) {
-                    infos.add(new ValueInfo(hookSet.getPrefix(), tv, hook.getApply()));
-                }
+        for (Skin skin : SkinFactory.getFactory().all()) {
+            if (isForceSkin && !skin.getPrefix().equals(forceSkin)) continue;
+
+            for (Hook hook : skin.values()) {
+                doHook(attrs, view, infos, isForceSkin, skin, hook);
             }
         }
 
@@ -142,16 +122,36 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         return view;
     }
 
-    void addHookSet(HookSet hookSet) {
-        if (mHookSets == null) {
-            HookSet[] n = new HookSet[1];
-            n[0] = hookSet;
-            mHookSets = n;
-        } else {
-            HookSet[] n = new HookSet[mHookSets.length + 1];
-            System.arraycopy(mHookSets, 0, n, 0, mHookSets.length);
-            n[mHookSets.length] = hookSet;
-            mHookSets = n;
+    private void doHook(AttributeSet attrs, View view, List<ValueInfo> infos, boolean forceSkin, Skin skin, Hook hook) {
+        final String value = attrs.getAttributeValue(skin.getNamespace(), hook.hookName());
+        if (value == null) {
+            return;
+        }
+        TypedValue tv = null;
+        final int hookType = hook.hookType();
+        if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
+            tv = TypedValueParser.parseReference(value, mRes);
+        }
+        if (tv == null) {
+            if ((hookType & HookType.COLOR) == HookType.COLOR) {
+                tv = TypedValueParser.parseColor(value);
+            } else if ((hookType & HookType.STRING) == HookType.STRING) {
+                tv = TypedValueParser.parseString(value);
+            } else if ((hookType & HookType.FLOAT) == HookType.FLOAT) {
+                tv = TypedValueParser.parseFloat(value);
+            } else if ((hookType & HookType.INTEGER) == HookType.INTEGER) {
+                tv = TypedValueParser.parseInt(value);
+            } else if ((hookType & HookType.BOOLEAN) == HookType.BOOLEAN) {
+                tv = TypedValueParser.parseInt(value);
+            } else if ((hookType & HookType.DIMENSION) == HookType.DIMENSION) {
+                tv = TypedValueParser.parseDimension(value, mDisplayMetrics);
+            }
+        }
+        if (tv == null) return;
+
+        if (hook.shouldHook(view, tv)) {
+            infos.add(new ValueInfo(skin.getPrefix(), tv, hook.getApply()));
+            if (forceSkin) hook.getApply().to(view, tv);
         }
     }
 

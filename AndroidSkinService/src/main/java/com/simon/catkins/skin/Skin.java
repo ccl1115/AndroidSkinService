@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * @author yulu02
  */
-public abstract class HookSet implements Map<String, Hook> {
+public abstract class Skin implements Map<String, Hook> {
 
     private final Map<String, Hook> mHooks = new HashMap<String, Hook>();
 

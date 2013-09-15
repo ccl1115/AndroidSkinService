@@ -15,38 +15,44 @@ import com.simon.catkins.skin.impl.*;
  */
 public class SkinService {
 
+    public static final String SP_FILE_SKIN_SERVICE = "skin_service";
     private static SkinInflatorFactory sSkinInflatorFactory;
 
-    public synchronized static SkinInflatorFactory getFactory(Context context) {
+    public synchronized static SkinInflatorFactory getInflatorFactory(Context context) {
         if (sSkinInflatorFactory == null) {
             sSkinInflatorFactory = new SkinInflatorFactory(context);
-            sSkinInflatorFactory.addHookSet(new DaySkin());
-            sSkinInflatorFactory.addHookSet(new NightSkin());
         }
         return sSkinInflatorFactory;
     }
 
-    private static String mSkin;
+    private static String mSkinName;
 
-    public static String getTheme() {
-        return mSkin;
+    public static String getSkin() {
+        return mSkinName;
+    }
+
+    public static void addSkin(Skin skin) {
+        SkinFactory.getFactory().register(skin);
     }
 
     public static void applySkin(Activity activity) {
-        mSkin = activity.getSharedPreferences("default", Context.MODE_PRIVATE).getString("skin", DaySkin.NAME);
-        Loot.logApply("Applying skin [" + mSkin + "] to activity " + activity.getClass().getSimpleName());
+        mSkinName = activity.getSharedPreferences(SP_FILE_SKIN_SERVICE, Context.MODE_PRIVATE)
+                .getString("skin", DefaultSkin.NAME);
+        Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
         applyViews(activity.findViewById(android.R.id.content));
     }
 
-    public static void applySkin(Activity activity, String skin) {
-        mSkin = skin;
-        activity.getSharedPreferences("default", Context.MODE_PRIVATE).edit().putString("skin", mSkin).apply();
-        Loot.logApply("Applying skin [" + mSkin + "] to activity " + activity.getClass().getSimpleName());
+    public static void applySkin(Activity activity, String skinName) {
+        if (SkinFactory.getFactory().get(skinName) == null) return;
+        mSkinName = skinName;
+        activity.getSharedPreferences(SP_FILE_SKIN_SERVICE, Context.MODE_PRIVATE).edit()
+                .putString("skinName", mSkinName).commit();
+        Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
         applyViews(activity.findViewById(android.R.id.content));
     }
 
     private static void applyViews(View root) {
-        if (mSkin == null) return;
+        if (mSkinName == null) return;
 
         Loot.logApply("Loop the view tree: " + root);
         Stack<View> stack = new Stack<View>();
@@ -69,9 +75,9 @@ public class SkinService {
                     continue;
                 }
 
-                Loot.logApply("Apply skin [" + mSkin + "] to view id: " + Integer.toHexString(v.getId()));
+                Loot.logApply("Apply skin [" + mSkinName + "] to view id: " + Integer.toHexString(v.getId()));
                 for (ValueInfo info : list) {
-                    if (mSkin.equals(info.skin)) {
+                    if (mSkinName.equals(info.skin)) {
                         info.apply.to(v, info.typedValue);
                     }
                 }
