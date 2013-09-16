@@ -1,5 +1,7 @@
 package com.simon.catkins.skin;
 
+import android.content.res.Resources;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,8 @@ public abstract class Skin implements Map<String, Hook> {
     public abstract String getPrefix();
 
     public abstract String getNamespace();
+
+    public abstract Resources getResources();
 
     @Override
     public void clear() {

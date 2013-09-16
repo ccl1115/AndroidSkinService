@@ -186,9 +186,16 @@ class TypedValueParser {
     /**
      * Parse the reference id
      */
-    static TypedValue parseReference(String ref, Resources res) {
+    static TypedValue parseReference(String ref, Resources res, String pkg) {
         if (ref.startsWith("@")) {
-            final int id = res.getIdentifier(ref.substring(1, ref.length() - 1), null, null);
+            ref = ref.substring(1);
+            String[] typeValue;
+            if (ref.contains("/")) {
+                typeValue = ref.split("/");
+            } else {
+                return null;
+            }
+            final int id = res.getIdentifier(typeValue[1], typeValue[0], pkg);
             if (id == 0) {
                 Loot.logParse("Parse reference failed: [" + ref + "] : resource not found");
                 return null;
@@ -197,6 +204,7 @@ class TypedValueParser {
             tv.type = TypedValue.TYPE_REFERENCE;
             tv.resourceId = id;
             tv.data = id;
+            Loot.logParse("Parse reference id: 0x" + Integer.toHexString(id));
             return tv;
         } else {
             Loot.logParse("Parse reference failed: [" + ref + "] : not start with @");

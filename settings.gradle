@@ -1,1 +1,1 @@
-include ':AndroidSkinService', ':AndroidSkinServiceSample'
+include ':AndroidSkinService', ':AndroidSkinServiceSample', ':ExternalSkin'

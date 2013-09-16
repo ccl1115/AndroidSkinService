@@ -31,11 +31,13 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
 
     private final DisplayMetrics mDisplayMetrics;
     private final Resources mRes;
+    private final String mPackageName;
 
     SkinInflatorFactory(Context context) {
         mConstructors = new HashMap<String, Constructor<? extends View>>();
         mDisplayMetrics = context.getResources().getDisplayMetrics();
         mRes = context.getResources();
+        mPackageName = context.getPackageName();
     }
 
 
@@ -43,7 +45,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         long now;
-        if (BuildConfig.DEBUG) {
+        if (Loot.DEBUG) {
             now = SystemClock.uptimeMillis();
         }
         View view;
@@ -81,7 +83,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
             return null;
         }
 
-        if (BuildConfig.DEBUG) {
+        if (Loot.DEBUG) {
             Log.d(TAG, "view name = " + name);
             final int count = attrs.getAttributeCount();
             for (int i = 0; i < count; i++) {
@@ -113,12 +115,15 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
             ViewTagger.setTag(view, R.id.skin_hooker, infos);
         }
 
-        if (BuildConfig.DEBUG) {
+        if (Loot.DEBUG) {
             now = SystemClock.uptimeMillis() - now;
             Log.d(TAG, "inflate view time = " + now);
+
         }
 
-        Loot.logInflate("Inflated a view: " + name + " using SkinInflatorFactory");
+        if (Loot.DEBUG) {
+            Loot.logInflate("Inflated a view: " + name + " using SkinInflatorFactory");
+        }
         return view;
     }
 
@@ -130,7 +135,11 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         TypedValue tv = null;
         final int hookType = hook.hookType();
         if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
-            tv = TypedValueParser.parseReference(value, mRes);
+            if (skin.getResources() == null) {
+                tv = TypedValueParser.parseReference(value, mRes, mPackageName);
+            } else {
+                tv = TypedValueParser.parseReference(value, skin.getResources(), "com.simon.catkins.skin.sample.externalskin");
+            }
         }
         if (tv == null) {
             if ((hookType & HookType.COLOR) == HookType.COLOR) {

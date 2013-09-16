@@ -1,5 +1,7 @@
 package com.simon.catkins.skin.impl;
 
+import android.content.res.Resources;
+
 /**
  * @author Simon Yu
  */
@@ -15,5 +17,10 @@ public class NightSkin extends BaseSkin {
     @Override
     public String getNamespace() {
         return "http://schemas.android.com/android/skin/night";
+    }
+
+    @Override
+    public Resources getResources() {
+        return null;
     }
 }

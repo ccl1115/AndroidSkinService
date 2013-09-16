@@ -1,13 +1,11 @@
 package com.simon.catkins.skin.sample;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
-import com.simon.catkins.skin.SkinInflatorFactory;
 import com.simon.catkins.skin.SkinService;
-import com.simon.catkins.skin.impl.DefaultSkin;
-import com.simon.catkins.skin.impl.NightSkin;
+import com.simon.catkins.skin.external.ExternalSkin;
 
 public class MainActivity extends Activity {
 
@@ -15,13 +13,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         getLayoutInflater().setFactory(SkinService.getInflatorFactory(this));
         super.onCreate(savedInstanceState);
+
+        SkinService.addSkin(new ExternalSkin(this, "/sdcard/ExternalSkin-release.zip"));
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SkinService.applySkin(this, NightSkin.NAME);
+        SkinService.applySkin(this, ExternalSkin.NAME);
     }
 
     @Override

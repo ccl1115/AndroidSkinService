@@ -2,6 +2,7 @@
                 xmlns:skin="http://schemas.android.com/android/skin"
                 xmlns:skin_night="http://schemas.android.com/android/skin/night"
                 xmlns:skin_default="http://schemas.android.com/android/skin/default"
+                xmlns:skin_external="http://schemas.android.com/android/skin/external"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -9,21 +10,26 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                tools:ignore="MissingPrefix"
                 tools:context=".MainActivity">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"
-            skin:skip="true"
+            android:text="This background color is load from a external library apk"
+            skin:skip="false"
+            skin_external:background="@color/yellow"
             skin_night:background="#FF000000"
             skin_default:background="#FF938293"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_world"
+            android:text="This is a skin in the main application"
             skin:forceSkin="default"
+            skin_external:background="@color/red"
             skin_night:background="#FF000000"
             skin_default:background="#FF938293"/>
+
 </LinearLayout>
