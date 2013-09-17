@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.widget.ResourceCursorAdapter;
 
 import com.simon.catkins.skin.Skin;
+import com.simon.catkins.skin.TypedValueParser;
 import com.simon.catkins.skin.hooks.BackgroundHook;
 import com.simon.catkins.skin.hooks.TextColorHook;
 import com.simon.catkins.skin.hooks.TextHook;
@@ -21,4 +22,8 @@ public abstract class BaseSkin extends Skin {
         put("visibility", new VisibilityHook());
     }
 
+    @Override
+    public TypedValueParser getParser() {
+        return null;
+    }
 }

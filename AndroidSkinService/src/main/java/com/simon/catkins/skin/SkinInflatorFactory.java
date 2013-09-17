@@ -33,6 +33,8 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
     private final Resources mRes;
     private final String mPackageName;
 
+    private final TypedValueParser mParser = new TypedValueParserImpl();
+
     SkinInflatorFactory(Context context) {
         mConstructors = new HashMap<String, Constructor<? extends View>>();
         mDisplayMetrics = context.getResources().getDisplayMetrics();
@@ -127,33 +129,39 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         return view;
     }
 
-    private void doHook(AttributeSet attrs, View view, List<ValueInfo> infos, boolean forceSkin, Skin skin, Hook hook) {
+    private void doHook(AttributeSet attrs,
+                        View view,
+                        List<ValueInfo> infos,
+                        boolean forceSkin,
+                        Skin skin,
+                        Hook hook) {
         final String value = attrs.getAttributeValue(skin.getNamespace(), hook.hookName());
         if (value == null) {
             return;
         }
+        final TypedValueParser parser = skin.getParser() == null ? mParser : skin.getParser();
         TypedValue tv = null;
         final int hookType = hook.hookType();
         if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
             if (skin.getResources() == null) {
-                tv = TypedValueParser.parseReference(value, mRes, mPackageName);
+                tv = parser.parseReference(value, mRes, mPackageName);
             } else {
-                tv = TypedValueParser.parseReference(value, skin.getResources(), "com.simon.catkins.skin.sample.externalskin");
+                tv = parser.parseReference(value, skin.getResources(), "com.simon.catkins.skin.sample.externalskin");
             }
         }
         if (tv == null) {
             if ((hookType & HookType.COLOR) == HookType.COLOR) {
-                tv = TypedValueParser.parseColor(value);
+                tv = parser.parseColor(value);
             } else if ((hookType & HookType.STRING) == HookType.STRING) {
-                tv = TypedValueParser.parseString(value);
+                tv = parser.parseString(value);
             } else if ((hookType & HookType.FLOAT) == HookType.FLOAT) {
-                tv = TypedValueParser.parseFloat(value);
+                tv = parser.parseFloat(value);
             } else if ((hookType & HookType.INTEGER) == HookType.INTEGER) {
-                tv = TypedValueParser.parseInt(value);
+                tv = parser.parseInt(value);
             } else if ((hookType & HookType.BOOLEAN) == HookType.BOOLEAN) {
-                tv = TypedValueParser.parseInt(value);
+                tv = parser.parseInt(value);
             } else if ((hookType & HookType.DIMENSION) == HookType.DIMENSION) {
-                tv = TypedValueParser.parseDimension(value, mDisplayMetrics);
+                tv = parser.parseDimension(value, mDisplayMetrics);
             }
         }
         if (tv == null) return;

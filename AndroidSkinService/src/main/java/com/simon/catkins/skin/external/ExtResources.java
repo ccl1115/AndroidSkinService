@@ -2,7 +2,9 @@ package com.simon.catkins.skin.external;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * This resources class can load external zipped or not zipped(directory) resources.
  *
- * Call {@link #setExternalResourcesPath} before you try to load any resources,
+ * Call {@link #setExternalResources} before you try to load any resources,
  * otherwise you will get nothing.
  *
  * @author Simon Yu
@@ -27,15 +29,13 @@ class ExtResources {
 
     private AssetManager mAssetManager;
     private Resources mRes;
-    private Context mContext;
 
-    private ExtResources(Context context) {
-        mContext = context.getApplicationContext();
+    private ExtResources() {
     }
 
-    public synchronized static ExtResources getInstance(Context context) {
+    synchronized static ExtResources getInstance() {
         if (mExtResources == null)  {
-            mExtResources = new ExtResources(context);
+            mExtResources = new ExtResources();
         }
         return mExtResources;
     }
@@ -81,18 +81,20 @@ class ExtResources {
      *
      * @return the resources
      */
-    public Resources getResources() {
+    Resources getResources() {
         return mRes;
     }
 
-    public void setExternalResourcesPath(String file) {
+    void setExternalResources(String file, DisplayMetrics dm, Configuration config) {
         mAssetManager = getSystemAssetManager();
         int cookie = addAssetPath(file);
         if (cookie == 0) {
             Log.w(TAG, "external resources not found");
         }
-        final Resources resources = mContext.getResources();
-        mRes = new Resources(mAssetManager, resources.getDisplayMetrics(),
-                resources.getConfiguration());
+        mRes = new Resources(mAssetManager, dm, config);
+    }
+
+    void updateConfiguration(DisplayMetrics dm, Configuration config) {
+        mRes.updateConfiguration(config, dm);
     }
 }
