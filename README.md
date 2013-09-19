@@ -33,6 +33,10 @@ A sample project to demostrate the usage.
 
 A library project contains only resources as an extarnal skin. Using Gradle to build and produce a ExternalSkin.ap\_ file which can be load by the AndroidSkinService. Of cause it should be placed in the target Android device and make sure your application has the right permission to access it.
 
+### Contribution
+
+Pull request is welcome.
+
 ## Licences
 
     AndroidSkinService

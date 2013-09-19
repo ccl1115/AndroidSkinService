@@ -11,17 +11,12 @@ public class DefaultSkin extends BaseSkin {
     public static final String NAME = "default";
 
     @Override
-    public String getPrefix() {
+    public String getName() {
         return NAME;
     }
 
     @Override
     public String getNamespace() {
         return "http://schemas.android.com/android/skin/default";
-    }
-
-    @Override
-    public Resources getResources() {
-        return null;
     }
 }

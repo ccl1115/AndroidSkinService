@@ -1,6 +1,7 @@
 package com.simon.catkins.skin;
 
 import android.content.res.Resources;
+import android.util.TypedValue;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,18 +9,33 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Define a skin interface
+ *
  * @author yulu02
  */
 public abstract class Skin implements Map<String, Hook> {
 
     private final Map<String, Hook> mHooks = new HashMap<String, Hook>();
 
-    public abstract String getPrefix();
+    /**
+     * The name of the skin. use to retrieve the skin object from
+     * the skin factory. or the prefix of the attribute in xml.
+     *
+     * @return the name
+     */
+    public abstract String getName();
 
+    /**
+     * The namespace is used in the xml.
+     * @return the xmlns namespace
+     */
     public abstract String getNamespace();
 
-    public abstract Resources getResources();
-
+    /**
+     * Provide your custom TypedValueParser. Return null if want
+     * to use the default one.
+     * @return A custom Parser.
+     */
     public abstract TypedValueParser getParser();
 
     @Override

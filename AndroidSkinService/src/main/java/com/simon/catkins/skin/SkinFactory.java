@@ -30,10 +30,10 @@ public final class SkinFactory {
     }
 
     public void register(Skin skin) {
-        if (mSkins.containsKey(skin.getPrefix())) {
+        if (mSkins.containsKey(skin.getName())) {
             return;
         }
-        mSkins.put(skin.getPrefix(), skin);
+        mSkins.put(skin.getName(), skin);
     }
 
     public void unregister(String name) {

@@ -10,6 +10,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.simon.catkins.skin.external.External;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -106,10 +108,25 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         final boolean isForceSkin = forceSkin != null;
 
         for (Skin skin : SkinFactory.getFactory().all()) {
-            if (isForceSkin && !skin.getPrefix().equals(forceSkin)) continue;
+            if (isForceSkin && !skin.getName().equals(forceSkin)) continue;
+
+            final TypedValueParser parser = skin.getParser() == null ? mParser : skin.getParser();
 
             for (Hook hook : skin.values()) {
-                doHook(attrs, view, infos, isForceSkin, skin, hook);
+                final String value = attrs.getAttributeValue(skin.getNamespace(), hook.hookName());
+                if (value == null) {
+                    continue;
+                }
+
+                TypedValue tv = doHook(value, skin, hook, parser);
+
+                if (tv == null) continue;
+
+                if (hook.shouldHook(view, tv)) {
+                    infos.add(new ValueInfo(skin.getName(), tv, hook.getApply()));
+                    // if force to a skin, apply the skin to the view immediately.
+                    if (isForceSkin) hook.getApply().to(view, tv);
+                }
             }
         }
 
@@ -129,24 +146,18 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         return view;
     }
 
-    private void doHook(AttributeSet attrs,
-                        View view,
-                        List<ValueInfo> infos,
-                        boolean forceSkin,
+    private TypedValue doHook(String value,
                         Skin skin,
-                        Hook hook) {
-        final String value = attrs.getAttributeValue(skin.getNamespace(), hook.hookName());
-        if (value == null) {
-            return;
-        }
-        final TypedValueParser parser = skin.getParser() == null ? mParser : skin.getParser();
+                        Hook hook,
+                        TypedValueParser parser) {
         TypedValue tv = null;
         final int hookType = hook.hookType();
         if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
-            if (skin.getResources() == null) {
-                tv = parser.parseReference(value, mRes, mPackageName);
+            if (skin instanceof External) {
+                External external = (External) skin;
+                tv = parser.parseReference(value, external.getResources(), external.getPackage());
             } else {
-                tv = parser.parseReference(value, skin.getResources(), "com.simon.catkins.skin.sample.externalskin");
+                tv = parser.parseReference(value, mRes, mPackageName);
             }
         }
         if (tv == null) {
@@ -164,12 +175,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
                 tv = parser.parseDimension(value, mDisplayMetrics);
             }
         }
-        if (tv == null) return;
-
-        if (hook.shouldHook(view, tv)) {
-            infos.add(new ValueInfo(skin.getPrefix(), tv, hook.getApply()));
-            if (forceSkin) hook.getApply().to(view, tv);
-        }
+        return tv;
     }
 
 }

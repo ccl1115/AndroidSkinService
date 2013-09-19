@@ -10,6 +10,7 @@ import com.simon.catkins.skin.external.ExternalSkin;
 
 public class MainActivity extends Activity {
 
+    public static final String SKIN_PKG = "com.simon.catkins.skin.sample.external";
     private ExternalSkin mExternalSkin;
 
     @Override
@@ -17,7 +18,8 @@ public class MainActivity extends Activity {
         getLayoutInflater().setFactory(SkinService.getInflatorFactory(this));
         super.onCreate(savedInstanceState);
 
-        mExternalSkin = new ExternalSkin("/sdcard/ExternalSkin-release.zip",
+        mExternalSkin = new ExternalSkin(SKIN_PKG,
+                "/sdcard/ExternalSkin-release.zip",
                 getResources().getDisplayMetrics(),
                 getResources().getConfiguration());
 
@@ -35,7 +37,7 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mExternalSkin.updateConfiguration(getResources().getDisplayMetrics(), newConfig);
+        mExternalSkin.updateConfiguration(SKIN_PKG, getResources().getDisplayMetrics(), newConfig);
     }
 
     @Override

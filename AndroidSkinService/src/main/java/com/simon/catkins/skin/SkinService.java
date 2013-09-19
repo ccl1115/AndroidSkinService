@@ -2,6 +2,7 @@ package com.simon.catkins.skin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import java.util.Stack;
 import com.simon.catkins.skin.impl.*;
 
 /**
+ * This is the main class of the AndroidSkinService.
  * @author yulu02
  */
 public class SkinService {
@@ -18,6 +20,10 @@ public class SkinService {
     public static final String SP_FILE_SKIN_SERVICE = "skin_service";
     private static SkinInflatorFactory sSkinInflatorFactory;
 
+    /**
+     * @param context a context
+     * @return the SkinInflatorFactory
+     */
     public synchronized static SkinInflatorFactory getInflatorFactory(Context context) {
         if (sSkinInflatorFactory == null) {
             sSkinInflatorFactory = new SkinInflatorFactory(context);

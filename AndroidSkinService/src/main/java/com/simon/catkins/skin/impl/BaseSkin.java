@@ -1,6 +1,7 @@
 package com.simon.catkins.skin.impl;
 
 import android.content.res.Resources;
+import android.util.TypedValue;
 import android.widget.ResourceCursorAdapter;
 
 import com.simon.catkins.skin.Skin;
