@@ -43,8 +43,8 @@ public class SkinService {
 
     public static void applySkin(Activity activity) {
         mSkinName = activity.getSharedPreferences(SP_FILE_SKIN_SERVICE, Context.MODE_PRIVATE)
-                .getString("skin", DefaultSkin.NAME);
-        Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
+                .getString("skinName", DefaultSkin.NAME);
+        if (Loot.DEBUG) Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
         applyViews(activity.findViewById(android.R.id.content));
     }
 
@@ -53,14 +53,14 @@ public class SkinService {
         mSkinName = skinName;
         activity.getSharedPreferences(SP_FILE_SKIN_SERVICE, Context.MODE_PRIVATE).edit()
                 .putString("skinName", mSkinName).commit();
-        Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
+        if (Loot.DEBUG) Loot.logApply("Applying skin [" + mSkinName + "] to activity " + activity.getClass().getSimpleName());
         applyViews(activity.findViewById(android.R.id.content));
     }
 
     private static void applyViews(View root) {
         if (mSkinName == null) return;
 
-        Loot.logApply("Loop the view tree: " + root);
+        if (Loot.DEBUG) Loot.logApply("Loop the view tree: " + root);
         Stack<View> stack = new Stack<View>();
         stack.push(root);
 
@@ -81,10 +81,11 @@ public class SkinService {
                     continue;
                 }
 
-                Loot.logApply("Apply skin [" + mSkinName + "] to view id: " + Integer.toHexString(v.getId()));
+                if (Loot.DEBUG) Loot.logApply("Apply skin [" + mSkinName + "] to view id: " + Integer.toHexString(v.getId()));
                 for (ValueInfo info : list) {
                     if (mSkinName.equals(info.skin)) {
                         info.apply.to(v, info.typedValue);
+                        if (Loot.DEBUG) Loot.logApply("    Apply typed value: " + info.typedValue.coerceToString());
                     }
                 }
             }

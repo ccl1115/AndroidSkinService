@@ -31,7 +31,7 @@ public final class ExternalSkin extends Skin implements External {
 
     @Override
     public String getPackage() {
-        return null;
+        return mPkg;
     }
 
     @Override

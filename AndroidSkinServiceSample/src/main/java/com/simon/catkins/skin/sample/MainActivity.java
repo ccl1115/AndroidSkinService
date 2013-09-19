@@ -3,19 +3,20 @@ package com.simon.catkins.skin.sample;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
+import com.simon.catkins.skin.ActivityWithSkinService;
 import com.simon.catkins.skin.SkinService;
 import com.simon.catkins.skin.external.ExternalSkin;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActivityWithSkinService {
 
-    public static final String SKIN_PKG = "com.simon.catkins.skin.sample.external";
+    public static final String SKIN_PKG = "com.simon.catkins.skin.sample.externalskin";
     private ExternalSkin mExternalSkin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getLayoutInflater().setFactory(SkinService.getInflatorFactory(this));
         super.onCreate(savedInstanceState);
 
         mExternalSkin = new ExternalSkin(SKIN_PKG,
@@ -26,12 +27,13 @@ public class MainActivity extends Activity {
         SkinService.addSkin(mExternalSkin);
 
         setContentView(R.layout.activity_main);
+
+        SkinService.applySkin(this, ExternalSkin.NAME);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SkinService.applySkin(this, ExternalSkin.NAME);
     }
 
     @Override
