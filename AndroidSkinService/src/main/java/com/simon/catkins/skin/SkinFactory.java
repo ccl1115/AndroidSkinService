@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Simon Yu
  */
-public final class SkinFactory {
+final class SkinFactory {
 
     private static SkinFactory sFactory;
 
