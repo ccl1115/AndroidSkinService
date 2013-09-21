@@ -1,16 +1,14 @@
 package com.simon.catkins.skin.sample;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
-import com.simon.catkins.skin.ActivityWithSkinService;
+import com.simon.catkins.skin.ActivityWithSkin;
 import com.simon.catkins.skin.SkinService;
 import com.simon.catkins.skin.external.ExternalSkin;
 
-public class MainActivity extends ActivityWithSkinService {
+public class MainActivity extends ActivityWithSkin {
 
     public static final String SKIN_PKG = "com.simon.catkins.skin.sample.externalskin";
     private ExternalSkin mExternalSkin;

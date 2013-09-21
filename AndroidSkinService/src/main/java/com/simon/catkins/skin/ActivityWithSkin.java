@@ -9,14 +9,14 @@ import android.view.LayoutInflater;
  *
  * @author Simon Yu
  */
-public class ActivityWithSkinService extends Activity {
+public class ActivityWithSkin extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LayoutInflater layoutInflater
                 = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        layoutInflater.setFactory(SkinService.getInflaterFactory(this));
+        layoutInflater.setFactory(SkinService.getInflaterFactory());
         super.onCreate(savedInstanceState);
     }
 

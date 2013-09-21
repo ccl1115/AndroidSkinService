@@ -20,13 +20,9 @@ public class SkinService {
     private static SkinInflaterFactory sSkinInflaterFactory;
 
     /**
-     * @param context a context
      * @return the SkinInflaterFactory
      */
-    public synchronized static SkinInflaterFactory getInflaterFactory(Context context) {
-        if (sSkinInflaterFactory == null) {
-            sSkinInflaterFactory = new SkinInflaterFactory(context);
-        }
+    public synchronized static SkinInflaterFactory getInflaterFactory() {
         return sSkinInflaterFactory;
     }
 
@@ -34,6 +30,12 @@ public class SkinService {
 
     public static String getSkin() {
         return mSkinName;
+    }
+
+    public static void init(Context context) {
+        if (sSkinInflaterFactory == null) {
+            sSkinInflaterFactory = new SkinInflaterFactory(context.getApplicationContext());
+        }
     }
 
     public static void addSkin(Skin skin) {
