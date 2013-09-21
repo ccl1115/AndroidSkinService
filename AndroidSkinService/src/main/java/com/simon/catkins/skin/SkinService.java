@@ -2,6 +2,7 @@ package com.simon.catkins.skin;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -87,7 +88,9 @@ public class SkinService {
                 if (Loot.DEBUG) Loot.logApply("Apply skin [" + mSkinName + "] to view id: " + Integer.toHexString(v.getId()));
                 for (ValueInfo info : list) {
                     if (mSkinName.equals(info.skin)) {
-                        info.apply.to(v, info.typedValue);
+                        Resources res = SkinFactory.getFactory().get(mSkinName).getResources();
+                        if (res == null) res = v.getResources();
+                        info.apply.to(v, info.typedValue, res);
                         if (Loot.DEBUG) Loot.logApply("    Apply typed value: " + info.typedValue.coerceToString());
                     }
                 }

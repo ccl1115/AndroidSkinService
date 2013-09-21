@@ -1,5 +1,6 @@
 package com.simon.catkins.skin.hooks;
 
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -13,13 +14,13 @@ public class TextHook implements Hook {
 
     private static final Apply APPLY = new Apply() {
         @Override
-        public void to(View view, TypedValue value) {
+        public void to(View view, TypedValue value, Resources res) {
             if (!(view instanceof TextView)) { return; }
 
             TextView tv = (TextView) view;
             switch (value.type) {
                 case TypedValue.TYPE_REFERENCE:
-                    tv.setText(value.data);
+                    tv.setText(res.getText(value.resourceId));
                     break;
                 case TypedValue.TYPE_STRING:
                     tv.setText(value.string);

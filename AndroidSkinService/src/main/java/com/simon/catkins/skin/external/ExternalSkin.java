@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import com.simon.catkins.skin.Skin;
 import com.simon.catkins.skin.TypedValueParser;
 import com.simon.catkins.skin.TypedValueParserImpl;
+import com.simon.catkins.skin.hooks.BackgroundHook;
 
 /**
  * @author Simon Yu
@@ -47,7 +48,7 @@ public final class ExternalSkin extends Skin implements External {
     public ExternalSkin(String pkg, String path, DisplayMetrics dm, Configuration config) {
         mPkg = pkg;
         mExtResources = new ExtResources(path, dm, config);
-        put("background", new ExtBackgroundHook());
+        put("background", new BackgroundHook());
     }
 
 }

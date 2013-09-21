@@ -27,4 +27,9 @@ public abstract class BaseSkin extends Skin {
     public TypedValueParser getParser() {
         return null;
     }
+
+    @Override
+    public Resources getResources() {
+        return null;
+    }
 }

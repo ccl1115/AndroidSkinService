@@ -108,6 +108,7 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
             if (isForceSkin && !skin.getName().equals(forceSkin)) continue;
 
             final TypedValueParser parser = skin.getParser() == null ? mParser : skin.getParser();
+            final Resources res = skin.getResources() == null ? mRes : skin.getResources();
 
             for (Hook hook : skin.values()) {
                 final String value = attrs.getAttributeValue(skin.getNamespace(), hook.hookName());
@@ -115,14 +116,14 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
                     continue;
                 }
 
-                TypedValue tv = doHook(value, skin, hook, parser);
+                TypedValue tv = doHook(value, res, skin, hook, parser);
 
                 if (tv == null) continue;
 
                 if (hook.shouldHook(view, tv)) {
                     infos.add(new ValueInfo(skin.getName(), tv, hook.getApply()));
                     // if force to a skin, apply the skin to the view immediately.
-                    if (isForceSkin) hook.getApply().to(view, tv);
+                    if (isForceSkin) hook.getApply().to(view, tv, res);
                 }
             }
         }
@@ -138,6 +139,7 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
     }
 
     private TypedValue doHook(String value,
+                        Resources res,
                         Skin skin,
                         Hook hook,
                         TypedValueParser parser) {
@@ -146,7 +148,7 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
         if ((hookType & HookType.REFERENCE_ID) == HookType.REFERENCE_ID) {
             if (skin instanceof External) {
                 External external = (External) skin;
-                tv = parser.parseReference(value, external.getResources(), external.getPackage());
+                tv = parser.parseReference(value, res, external.getPackage());
             } else {
                 tv = parser.parseReference(value, mRes, mPackageName);
             }

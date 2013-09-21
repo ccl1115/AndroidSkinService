@@ -1,5 +1,6 @@
 package com.simon.catkins.skin;
 
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -42,6 +43,6 @@ public interface Hook {
      * the new skin using the bound TypedValue.
      */
     public interface Apply {
-        void to(View view, TypedValue value);
+        void to(View view, TypedValue value, Resources res);
     }
 }

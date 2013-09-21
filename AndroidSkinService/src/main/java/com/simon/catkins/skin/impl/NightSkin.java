@@ -1,6 +1,5 @@
 package com.simon.catkins.skin.impl;
 
-import android.content.res.Resources;
 
 /**
  * @author Simon Yu

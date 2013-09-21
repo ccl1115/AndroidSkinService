@@ -14,10 +14,9 @@ public class BackgroundHook implements Hook {
 
     private static final Apply APPLY = new Apply() {
         @Override
-        public void to(View view, TypedValue value) {
+        public void to(View view, TypedValue value, Resources res) {
             switch (value.type) {
                 case TypedValue.TYPE_REFERENCE:
-                    Resources res = view.getResources();
                     if (res != null) {
                         view.setBackgroundColor(res.getColor(value.data));
                     }

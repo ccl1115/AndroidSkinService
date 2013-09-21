@@ -1,5 +1,6 @@
 package com.simon.catkins.skin.hooks;
 
+import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -13,7 +14,7 @@ public class VisibilityHook implements Hook {
 
     private static final Apply APPLY = new Apply() {
         @Override
-        public void to(View view, TypedValue value) {
+        public void to(View view, TypedValue value, Resources res) {
             if ("visible".equals(value.string)) {
                 view.setVisibility(View.VISIBLE);
             } else if ("invisible".equals(value.string)) {

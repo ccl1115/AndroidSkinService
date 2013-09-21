@@ -9,5 +9,4 @@ import android.content.res.Resources;
 public interface External {
     String getPackage();
 
-    Resources getResources();
 }

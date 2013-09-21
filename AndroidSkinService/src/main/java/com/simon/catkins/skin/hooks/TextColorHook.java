@@ -15,7 +15,7 @@ public class TextColorHook implements Hook {
     private static final Apply APPLY = new Apply() {
 
         @Override
-        public void to(View view, TypedValue value) {
+        public void to(View view, TypedValue value, Resources res) {
             if (!(view instanceof TextView)) {
                 return;
             }
@@ -28,10 +28,7 @@ public class TextColorHook implements Hook {
                     tv.setTextColor(value.data);
                     break;
                 case TypedValue.TYPE_REFERENCE:
-                    Resources resources = view.getResources();
-                    if (resources != null) {
-                        tv.setTextColor(resources.getColor(value.data));
-                    }
+                    tv.setTextColor(res.getColor(value.data));
                     break;
             }
         }

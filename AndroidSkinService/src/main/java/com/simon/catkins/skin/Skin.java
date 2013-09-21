@@ -38,6 +38,8 @@ public abstract class Skin implements Map<String, Hook> {
      */
     public abstract TypedValueParser getParser();
 
+    public abstract Resources getResources();
+
     @Override
     public void clear() {
         mHooks.clear();
