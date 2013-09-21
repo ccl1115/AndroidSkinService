@@ -11,18 +11,57 @@ import android.view.LayoutInflater;
  */
 public class ActivityWithSkin extends Activity {
 
+    /**
+     * Use the delegate instead of extending this class.
+     *
+     * @param activity the target activity
+     * @return the delegate of lifecycle callbacks
+     */
+    public static Delegate getDelegate(Activity activity) {
+        return new DelegateImpl(activity);
+    }
+
+    public interface Delegate {
+        void onCreatePre();
+
+        void onResume();
+    }
+
+    private Delegate mDelegate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LayoutInflater layoutInflater
-                = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        mDelegate = new DelegateImpl(this);
 
-        layoutInflater.setFactory(SkinService.getInflaterFactory());
+        mDelegate.onCreatePre();
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SkinService.applySkin(this);
+        mDelegate.onResume();
+    }
+
+    private static class DelegateImpl implements Delegate {
+        private Activity mActivity;
+
+        public DelegateImpl(Activity activity) {
+            mActivity = activity;
+        }
+
+
+        @Override
+        public void onCreatePre() {
+            LayoutInflater layoutInflater
+                    = (LayoutInflater) mActivity.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            layoutInflater.setFactory(SkinService.getInflaterFactory());
+        }
+
+        @Override
+        public void onResume() {
+            SkinService.applySkin(mActivity);
+        }
     }
 }
