@@ -17,6 +17,8 @@ public final class ExternalSkin extends Skin implements External {
 
     private final String mPkg;
 
+    private ExtResources mExtResources;
+
     @Override
     public String getName() {
         return NAME;
@@ -34,7 +36,7 @@ public final class ExternalSkin extends Skin implements External {
 
     @Override
     public Resources getResources() {
-        return ExtResources.getInstance().getResources();
+        return mExtResources.getResources();
     }
 
     @Override
@@ -44,7 +46,7 @@ public final class ExternalSkin extends Skin implements External {
 
     public ExternalSkin(String pkg, String path, DisplayMetrics dm, Configuration config) {
         mPkg = pkg;
-        ExtResources.getInstance().setExternalResources(path, dm, config);
+        mExtResources = new ExtResources(path, dm, config);
         put("background", new ExtBackgroundHook());
     }
 

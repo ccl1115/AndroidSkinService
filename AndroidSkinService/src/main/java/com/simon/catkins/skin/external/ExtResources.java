@@ -25,21 +25,17 @@ import java.lang.reflect.Method;
 class ExtResources {
     private static final String TAG = "ExtResources";
 
-    private static ExtResources mExtResources;
-
     private AssetManager mAssetManager;
     private Resources mRes;
 
-    private ExtResources() {
-    }
-
-    synchronized static ExtResources getInstance() {
-        if (mExtResources == null)  {
-            mExtResources = new ExtResources();
+    ExtResources(String file, DisplayMetrics dm, Configuration config) {
+        mAssetManager = getSystemAssetManager();
+        int cookie = addAssetPath(file);
+        if (cookie == 0) {
+            Log.w(TAG, "external resources not found");
         }
-        return mExtResources;
+        mRes = new Resources(mAssetManager, dm, config);
     }
-
 
     /**
      * Use reflection to create a default AssetManager
@@ -83,18 +79,5 @@ class ExtResources {
      */
     Resources getResources() {
         return mRes;
-    }
-
-    void setExternalResources(String file, DisplayMetrics dm, Configuration config) {
-        mAssetManager = getSystemAssetManager();
-        int cookie = addAssetPath(file);
-        if (cookie == 0) {
-            Log.w(TAG, "external resources not found");
-        }
-        mRes = new Resources(mAssetManager, dm, config);
-    }
-
-    void updateConfiguration(DisplayMetrics dm, Configuration config) {
-        mRes.updateConfiguration(config, dm);
     }
 }
