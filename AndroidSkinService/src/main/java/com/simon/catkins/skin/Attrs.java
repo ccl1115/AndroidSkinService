@@ -4,7 +4,7 @@ package com.simon.catkins.skin;
  * These xml attributes are not parsed by Android's parser, so they aren't defined
  * in the attrs.xml file.
  *
- * They are parsed by the SkinInflatorFactory.
+ * They are parsed by the SkinInflaterFactory.
  *
  * @author Simon Yu
  */

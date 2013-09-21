@@ -2,10 +2,11 @@ package com.simon.catkins.skin;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 /**
+ * Any activity extends this activity will have the skin service affected.
+ *
  * @author Simon Yu
  */
 public class ActivityWithSkinService extends Activity {
@@ -15,7 +16,7 @@ public class ActivityWithSkinService extends Activity {
         LayoutInflater layoutInflater
                 = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        layoutInflater.setFactory(SkinService.getInflatorFactory(this));
+        layoutInflater.setFactory(SkinService.getInflaterFactory(this));
         super.onCreate(savedInstanceState);
     }
 

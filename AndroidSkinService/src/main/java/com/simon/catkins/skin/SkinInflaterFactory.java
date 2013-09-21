@@ -24,8 +24,8 @@ import java.util.Map;
  *
  * @author yulu02
  */
-public class SkinInflatorFactory implements LayoutInflater.Factory {
-    private static final String TAG = "SkinInflatorFactory";
+public class SkinInflaterFactory implements LayoutInflater.Factory {
+    private static final String TAG = "SkinInflaterFactory";
 
     private static final String LOAD_PREFIX = "android.widget.";
 
@@ -37,7 +37,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
 
     private final TypedValueParser mParser = new TypedValueParserImpl();
 
-    SkinInflatorFactory(Context context) {
+    SkinInflaterFactory(Context context) {
         mConstructors = new HashMap<String, Constructor<? extends View>>();
         mDisplayMetrics = context.getResources().getDisplayMetrics();
         mRes = context.getResources();
@@ -141,7 +141,7 @@ public class SkinInflatorFactory implements LayoutInflater.Factory {
         }
 
         if (Loot.DEBUG) {
-            Loot.logInflate("Inflated a view: " + name + " using SkinInflatorFactory");
+            Loot.logInflate("Inflated a view: " + name + " using SkinInflaterFactory");
         }
         return view;
     }

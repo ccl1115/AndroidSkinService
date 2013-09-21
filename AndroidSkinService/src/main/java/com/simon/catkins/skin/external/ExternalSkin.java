@@ -46,7 +46,7 @@ public final class ExternalSkin extends Skin implements External {
 
     public ExternalSkin(String pkg, String path, DisplayMetrics dm, Configuration config) {
         setExternalPath(pkg, path, dm, config);
-        put("background", new BackgroundHook());
+        put("background", new ExtBackgroundHook());
     }
 
     public void setExternalPath(String pkg, String path, DisplayMetrics dm, Configuration config) {
