@@ -15,9 +15,7 @@ import com.simon.catkins.skin.TypedValueParserImpl;
 public final class ExternalSkin extends Skin implements External {
     public static final String NAME = "external";
 
-    private TypedValueParser mParser = new Parser();
-
-    private String mPkg;
+    private final String mPkg;
 
     @Override
     public String getName() {
@@ -41,34 +39,13 @@ public final class ExternalSkin extends Skin implements External {
 
     @Override
     public TypedValueParser getParser() {
-        return mParser;
+        return null;
     }
 
     public ExternalSkin(String pkg, String path, DisplayMetrics dm, Configuration config) {
-        setExternalPath(pkg, path, dm, config);
+        mPkg = pkg;
+        ExtResources.getInstance().setExternalResources(path, dm, config);
         put("background", new ExtBackgroundHook());
     }
 
-    public void setExternalPath(String pkg, String path, DisplayMetrics dm, Configuration config) {
-        mPkg = pkg;
-        ExtResources.getInstance().setExternalResources(path, dm, config);
-    }
-
-    public void updateConfiguration(String pkg, DisplayMetrics dm, Configuration config) {
-        mPkg = pkg;
-        ExtResources.getInstance().updateConfiguration(dm, config);
-    }
-
-    private class Parser extends TypedValueParserImpl {
-        @Override
-        public TypedValue parseReference(String ref, Resources res, String pkg) {
-            TypedValue tv = super.parseReference(ref, res, pkg);
-            if (tv != null) {
-                // Need the literal string to re-parser a resource when
-                // the external path changed.
-                tv.string = ref;
-            }
-            return tv;
-        }
-    }
 }

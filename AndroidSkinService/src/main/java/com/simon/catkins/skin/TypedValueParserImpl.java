@@ -11,7 +11,6 @@ import android.util.TypedValue;
  * @see android.util.TypedValue
  */
 public class TypedValueParserImpl implements TypedValueParser {
-    private static final String TAG = "TypedValueParserImpl";
     private static final boolean DEBUG = Loot.DEBUG;
 
     /**

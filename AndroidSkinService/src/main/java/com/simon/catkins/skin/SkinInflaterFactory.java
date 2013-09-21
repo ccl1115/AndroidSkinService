@@ -49,9 +49,6 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         long now;
-        if (Loot.DEBUG) {
-            now = SystemClock.uptimeMillis();
-        }
         View view;
         try {
             Constructor<? extends View> constructor;
@@ -132,12 +129,6 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
 
         if (infos.size() > 0) {
             ViewTagger.setTag(view, R.id.skin_hooker, infos);
-        }
-
-        if (Loot.DEBUG) {
-            now = SystemClock.uptimeMillis() - now;
-            Log.d(TAG, "inflate view time = " + now);
-
         }
 
         if (Loot.DEBUG) {
