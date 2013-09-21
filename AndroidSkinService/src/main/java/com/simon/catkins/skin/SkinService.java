@@ -23,6 +23,8 @@ public class SkinService {
      * @return the SkinInflaterFactory
      */
     public synchronized static SkinInflaterFactory getInflaterFactory() {
+        if (sSkinInflaterFactory == null)
+            throw new RuntimeException("AndroidSkinService hasn't been init");
         return sSkinInflaterFactory;
     }
 
