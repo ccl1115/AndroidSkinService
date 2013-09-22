@@ -2,7 +2,6 @@ package com.simon.catkins.skin;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * InflatorFactory to bind hooks to views.
+ * InflaterFactory to bind hooks to views.
  *
  * @author yulu02
  */
@@ -48,7 +47,6 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
     @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-        long now;
         View view;
         try {
             Constructor<? extends View> constructor;
@@ -129,7 +127,7 @@ public class SkinInflaterFactory implements LayoutInflater.Factory {
         }
 
         if (infos.size() > 0) {
-            ViewTagger.setTag(view, R.id.skin_hooker, infos);
+            ViewTagger.setTag(view, R.id.skin_info, infos);
         }
 
         if (Loot.DEBUG) {

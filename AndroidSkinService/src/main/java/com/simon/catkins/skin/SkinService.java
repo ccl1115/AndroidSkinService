@@ -79,7 +79,7 @@ public class SkinService {
                 }
             } else {
                 @SuppressWarnings("unchecked")
-                List<ValueInfo> list = (List<ValueInfo>) ViewTagger.getTag(v, R.id.skin_hooker);
+                List<ValueInfo> list = (List<ValueInfo>) ViewTagger.getTag(v, R.id.skin_info);
 
                 if (list == null) {
                     continue;
